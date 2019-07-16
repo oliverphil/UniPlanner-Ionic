@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Login
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    <h1>What is your name?</h1>
+
+    <ion-item>
+      <ion-title>Name: </ion-title>
+      <ion-input placeholder="John Smith" (ionChange)="onUpdate($event.detail.value)"></ion-input>
+    </ion-item>
+
+
+    <ion-button (click)="onLogin($event)" expand="block">Login</ion-button>
+  </div>
+</ion-content>
