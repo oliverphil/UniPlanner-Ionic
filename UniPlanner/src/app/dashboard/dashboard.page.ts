@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {NavController} from "@ionic/angular";
+import {AuthenticationService} from "../services/authentication.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -7,9 +9,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardPage implements OnInit {
 
-  constructor() { }
+  userEmail: string;
 
-  ngOnInit() {
+  constructor(
+      private navCtrl: NavController,
+      private authService: AuthenticationService
+  ) {}
+
+  ngOnInit(){
+
+    if(this.authService.userDetails()){
+      this.userEmail = this.authService.userDetails().email;
+    }else{
+      this.navCtrl.navigateBack('');
+    }
   }
 
 }
