@@ -15,7 +15,6 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 
 import * as firebase from 'firebase';
 import {ReactiveFormsModule} from "@angular/forms";
-import {AngularFireModule} from "@angular/fire";
 
 @NgModule({
   declarations: [AppComponent],
