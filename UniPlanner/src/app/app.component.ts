@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import {AuthenticationService} from "./services/authentication.service";
+import { AuthenticationService } from "./services/authentication.service";
 
 @Component({
   selector: 'app-root',
@@ -17,8 +17,8 @@ export class AppComponent {
       icon: 'home'
     },
     {
-      title: 'List',
-      url: '/list',
+      title: 'Courses',
+      url: '/courses',
       icon: 'list'
     }
   ];
@@ -32,11 +32,6 @@ export class AppComponent {
     private authService: AuthenticationService
   ) {
     this.initializeApp();
-    if(this.authService.userDetails()){
-      this.auth = true;
-    }else{
-      this.auth = false;
-    }
   }
 
   initializeApp() {
@@ -44,6 +39,14 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
+  }
+
+  updateAuth(){
+    if(this.authService.userDetails()){
+      this.auth = true;
+    }else{
+      this.auth = false;
+    }
   }
 
 }

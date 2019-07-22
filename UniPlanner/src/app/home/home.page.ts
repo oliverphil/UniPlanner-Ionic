@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {NavController} from "@ionic/angular";
 import {AuthenticationService} from "../services/authentication.service";
 
@@ -14,10 +14,7 @@ export class HomePage {
   constructor(
       private navCtrl: NavController,
       private authService: AuthenticationService
-  ) {}
-
-  ngOnInit(){
-
+  ) {
     if(this.authService.userDetails()){
       this.userEmail = this.authService.userDetails().email;
     }else{

@@ -15,6 +15,11 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 
 import * as firebase from 'firebase';
 import {ReactiveFormsModule} from "@angular/forms";
+import {AngularFireModule} from "@angular/fire";
+import {FirestoreService} from "./services/firestore.service";
+import {AngularFirestore} from "@angular/fire/firestore";
+import {AddNewCoursePage} from "./add-new-course/add-new-course.page";
+import {CoursesPage} from "./courses/courses.page";
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,13 +29,16 @@ import {ReactiveFormsModule} from "@angular/forms";
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
+    AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
   ],
   providers: [
     StatusBar,
     SplashScreen,
     AuthenticationService,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    FirestoreService,
+    AngularFirestore
   ],
   bootstrap: [AppComponent]
 })

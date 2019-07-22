@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {NavController} from "@ionic/angular";
+import {AlertController, NavController} from "@ionic/angular";
 import {AuthenticationService} from "../services/authentication.service";
+import {AppComponent} from "../app.component";
+import {FirestoreService} from "../services/firestore.service";
 
 @Component({
   selector: 'app-login',
@@ -17,7 +19,10 @@ export class LoginPage implements OnInit {
 
       private navCtrl: NavController,
       private authService: AuthenticationService,
-      private formBuilder: FormBuilder
+      private formBuilder: FormBuilder,
+      private alert: AlertController,
+      private appComponent: AppComponent,
+      private database: FirestoreService
 
   ) { }
 
@@ -51,12 +56,35 @@ export class LoginPage implements OnInit {
   loginUser(value){
     this.authService.loginUser(value)
         .then(res => {
-          console.log(res);
-          this.errorMessage = "";
+          this.appComponent.updateAuth();
           this.navCtrl.navigateForward('/home');
         }, err => {
           this.errorMessage = err.message;
+          this.presentAlert()
         })
+  }
+
+  async presentAlert() {
+    const alert = await this.alert.create({
+      header: 'Incorrect Details',
+      message: this.errorMessage,
+      buttons: [
+        {
+          text: 'Create Account',
+          handler: value => {
+            this.navCtrl.navigateForward('/register');
+          }
+        },
+        {
+          text: 'Try Again',
+          handler: value => {
+            this.navCtrl.navigateBack("/login");
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
   goToRegisterPage(){
