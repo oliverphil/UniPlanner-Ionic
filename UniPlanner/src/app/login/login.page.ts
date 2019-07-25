@@ -5,6 +5,7 @@ import {AuthenticationService} from "../services/authentication.service";
 import {AppComponent} from "../app.component";
 import {FirestoreService} from "../services/firestore.service";
 
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -56,7 +57,6 @@ export class LoginPage implements OnInit {
   loginUser(value){
     this.authService.loginUser(value)
         .then(res => {
-          this.appComponent.updateAuth();
           this.navCtrl.navigateForward('/home');
         }, err => {
           this.errorMessage = err.message;

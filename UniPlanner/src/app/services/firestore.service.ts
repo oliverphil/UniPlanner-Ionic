@@ -1,25 +1,15 @@
 import { Injectable } from '@angular/core';
-import {AngularFirestore} from "@angular/fire/firestore";
+import * as firebase from "firebase"
+import { userDetails } from "./authentication.service";
+import {firestore} from "firebase";
 
 @Injectable({
   providedIn: 'root'
 })
 export class FirestoreService {
 
-  constructor(
-      private firestore: AngularFirestore
-  ) {
+  fetchCourseData() {
+    return firebase.firestore().collection(`/users/${userDetails().uid}/courses/`).get()
   }
 
-  fetchCourseData(user: string) {
-    return this.firestore.collection<any>('users/uzoeuFTjeB6UZVUQNkcS/courses', ref =>
-      ref.where('email', '==', user)).valueChanges();
-  }
-
-  putUser(userEmail: string) {
-    let user = this.firestore.doc<any>('users/uzoeuFTjeB6UZVUQNkcS');
-    user.set({
-      email: userEmail
-    }).catch(err => console.log(err));
-  }
 }

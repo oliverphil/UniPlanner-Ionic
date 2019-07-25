@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { AuthenticationService } from "./services/authentication.service";
+import { userDetails } from "./services/authentication.service";
 
 @Component({
   selector: 'app-root',
@@ -23,13 +23,12 @@ export class AppComponent {
     }
   ];
 
-  private auth: boolean;
+  private checkAuth = userDetails;
 
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
-    private statusBar: StatusBar,
-    private authService: AuthenticationService
+    private statusBar: StatusBar
   ) {
     this.initializeApp();
   }
@@ -39,14 +38,6 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
-  }
-
-  updateAuth(){
-    if(this.authService.userDetails()){
-      this.auth = true;
-    }else{
-      this.auth = false;
-    }
   }
 
 }

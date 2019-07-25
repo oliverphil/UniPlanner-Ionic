@@ -7,7 +7,7 @@ import { AuthenticationService } from "../services/authentication.service";
   templateUrl: 'list.page.html',
   styleUrls: ['list.page.scss']
 })
-export class ListPage implements OnInit {
+export class ListPage {
   private selectedItem: any;
 
   userEmail: string;
@@ -17,11 +17,4 @@ export class ListPage implements OnInit {
       private authService: AuthenticationService
   ) {}
 
-  ngOnInit(){
-    if(this.authService.userDetails()) {
-      this.userEmail = this.authService.userDetails().email;
-    } else {
-      this.navCtrl.navigateBack('');
-    }
-  }
 }

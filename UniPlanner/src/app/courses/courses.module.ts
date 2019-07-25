@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { CoursesPage } from './courses.page';
 import {AddNewCoursePage} from "../add-new-course/add-new-course.page";
+import {ColorPickerModule} from "ngx-color-picker";
 
 const routes: Routes = [
   {
@@ -16,12 +17,12 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    RouterModule.forChild(routes)
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        RouterModule.forChild(routes)
+    ],
   declarations: [CoursesPage, AddNewCoursePage],
   entryComponents: [AddNewCoursePage],
   exports: [AddNewCoursePage]

@@ -1,6 +1,6 @@
 <ion-app>
     <ion-split-pane>
-        <ion-menu type="overlay" *ngIf="this.auth === true">
+        <ion-menu type="overlay" *ngIf="checkAuth()">
             <ion-header>
                 <ion-toolbar>
                     <ion-title>Menu</ion-title>

@@ -57,7 +57,6 @@ export class RegisterPage implements OnInit {
                 console.log(res);
                 this.errorMessage = "";
                 this.successMessage = "Your account has been created. Please log in.";
-                this.database.putUser(value.email);
                 this.showAlert();
             }, err => {
                 console.log(err);

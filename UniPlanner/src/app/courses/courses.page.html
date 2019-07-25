@@ -8,6 +8,17 @@
 </ion-header>
 
 <ion-content>
+  <ion-item *ngIf="!this.courses" class="no-course-wrapper">
+    <ion-content *ngIf="!this.courses" class="no-course">
+      It doesn't look like there are any courses here.<br/>
+      Feel free to <a (click)="newCourse()">add a course</a>
+    </ion-content>
+  </ion-item>
+
+  <ion-item *ngIf="this.courses" class="course-wrapper">
+
+  </ion-item>
+
   <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="newCourse()">
     <ion-fab-button>
       <ion-icon name="add"></ion-icon>

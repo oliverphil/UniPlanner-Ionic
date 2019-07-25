@@ -14,12 +14,6 @@ export class HomePage {
   constructor(
       private navCtrl: NavController,
       private authService: AuthenticationService
-  ) {
-    if(this.authService.userDetails()){
-      this.userEmail = this.authService.userDetails().email;
-    }else{
-      this.navCtrl.navigateBack('');
-    }
-  }
+  ) { }
 
 }

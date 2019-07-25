@@ -23,16 +23,18 @@ export class CoursesPage implements OnInit {
   ) { }
 
   ngOnInit(){
-    if(this.authService.userDetails()) {
-      this.userEmail = this.authService.userDetails().email;
-    } else {
-      this.navCtrl.navigateBack('');
-    }
-
-    this.database.fetchCourseData(this.userEmail).subscribe(data => {
-      this.courses = data;
-      console.log(data);
+    this.database.fetchCourseData().then(data => {
+      if(data.empty) {
+        this.courses = false;
+      }else{
+        this.courses = {}
+        data.docs.forEach(course => {
+          let courseData = course.data()
+          this.courses = {[course.id]: courseData, ...this.courses}
+        })
+      }
     })
+    console.log(this.courses)
   }
 
   newCourse() {

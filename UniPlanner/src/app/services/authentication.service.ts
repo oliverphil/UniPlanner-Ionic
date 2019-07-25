@@ -9,11 +9,18 @@ export class AuthenticationService {
   constructor() { }
 
   registerUser(value){
+    let {email, password} = value
+
     return new Promise<any>((resolve, reject) => {
-      firebase.auth().createUserWithEmailAndPassword(value.email, value.password)
-          .then(
-              res => resolve(res),
-              err => reject(err))
+      firebase.auth().createUserWithEmailAndPassword(email, password)
+          .then((newUserCredentials: firebase.auth.UserCredential) => {
+              firebase.firestore()
+                  .doc(`/users/${newUserCredentials.user.uid}`)
+                  .set({email})
+          })
+          .catch(err => {
+              reject(err);
+          })
     })
   }
 
@@ -39,8 +46,8 @@ export class AuthenticationService {
       }
     })
   }
+}
 
-  userDetails(){
+export function userDetails() {
     return firebase.auth().currentUser;
-  }
 }
