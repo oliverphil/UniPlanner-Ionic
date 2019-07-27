@@ -12,4 +12,8 @@ export class FirestoreService {
     return firebase.firestore().collection(`/users/${userDetails().uid}/courses/`).get()
   }
 
+  addCourse(data) {
+    firebase.firestore().collection(`/users/${userDetails().uid}/courses/`).doc(data.code).set(data)
+  }
+
 }

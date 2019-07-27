@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import {AuthenticationService} from "../services/authentication.service";
-import {NavController} from "@ionic/angular";
-import { NavParams } from "@ionic/angular";
+import { Component } from '@angular/core';
+import { FirestoreService } from '../services/firestore.service'
+import {ModalController, NavController} from "@ionic/angular";
 
 @Component({
   selector: 'app-add-new-course',
@@ -10,7 +9,19 @@ import { NavParams } from "@ionic/angular";
 })
 export class AddNewCoursePage {
 
-  constructor() { }
+  private info = {
+    code: '',
+    details: ''
+  }
 
+  constructor(private database: FirestoreService,
+              private modalCtrl: ModalController,
+              private navCtrl: NavController
+  ) {}
+
+  handleSubmit() {
+    this.database.addCourse(this.info)
+    this.modalCtrl.dismiss()
+  }
 
 }

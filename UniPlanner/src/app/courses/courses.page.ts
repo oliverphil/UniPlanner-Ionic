@@ -12,39 +12,42 @@ import {AddNewCoursePage} from "../add-new-course/add-new-course.page";
 })
 export class CoursesPage implements OnInit {
 
-  private userEmail: string
-  private courses: any
+  private courses: any[]
 
   constructor(
       private authService: AuthenticationService,
       private navCtrl: NavController,
       private database: FirestoreService,
-      private modalCtrl: ModalController
-  ) { }
+      private modalCtrl: ModalController,
+  ) {
+
+  }
 
   ngOnInit(){
     this.database.fetchCourseData().then(data => {
-      if(data.empty) {
-        this.courses = false;
-      }else{
-        this.courses = {}
+      let courses = []
+      if(!data.empty) {
         data.docs.forEach(course => {
           let courseData = course.data()
-          this.courses = {[course.id]: courseData, ...this.courses}
+          courses.push(courseData)
         })
       }
+      this.courses = courses
     })
-    console.log(this.courses)
   }
 
   newCourse() {
     this.presentModal()
+    this.ngOnInit()
   }
 
   async presentModal() {
-    const modal = await this.modalCtrl.create({
+    let modal = await this.modalCtrl.create({
       component: AddNewCoursePage
     })
+    modal.onDidDismiss().then(resolve => {
+      this.ngOnInit()
+    }).catch(err => console.log(err))
 
     return await modal.present();
   }

@@ -1,10 +1,21 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Add a Course</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-title>Add a Course</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-label>Course Code</ion-label>
-  <ion-input type="text"></ion-input>
+    <form class="form" (ngSubmit)="handleSubmit()">
+        <ion-item>
+            <ion-label position="floating" color="primary">Course Code</ion-label>
+            <ion-input name="code" type="text" [(ngModel)]="info.code"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label position="floating" color="primary">Details</ion-label>
+            <ion-textarea name="details" [(ngModel)]="info.details"></ion-textarea>
+        </ion-item>
+
+        <ion-button expand="block" class="submit-btn" type="submit" [disabled]="info.code === ''">Add Course</ion-button>
+    </form>
 </ion-content>

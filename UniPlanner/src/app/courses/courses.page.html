@@ -7,17 +7,22 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-item *ngIf="!this.courses" class="no-course-wrapper">
-    <ion-content *ngIf="!this.courses" class="no-course">
+<ion-content id="courses-content">
+  <ion-item *ngIf="!this.courses || this.courses.length === 0" class="no-course-wrapper">
+    <ion-content *ngIf="!this.courses || this.courses.length === 0" class="no-course">
       It doesn't look like there are any courses here.<br/>
       Feel free to <a (click)="newCourse()">add a course</a>
     </ion-content>
   </ion-item>
 
-  <ion-item *ngIf="this.courses" class="course-wrapper">
-
-  </ion-item>
+  <ion-content *ngIf="this.courses && this.courses.length > 0" class="course-wrapper">
+    <ion-item *ngFor="let course of courses" >
+      <ion-item class="course">
+        <p class="code">{{course.code}}</p>
+        {{course.details}}
+      </ion-item>
+    </ion-item>
+  </ion-content>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="newCourse()">
     <ion-fab-button>
