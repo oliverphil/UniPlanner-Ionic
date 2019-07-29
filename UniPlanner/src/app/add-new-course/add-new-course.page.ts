@@ -17,8 +17,7 @@ export class AddNewCoursePage {
   constructor(private modalCtrl: ModalController) {}
 
   handleSubmit() {
-    FirestoreService.addCourse(this.info)
-    this.modalCtrl.dismiss()
+    this.modalCtrl.dismiss(FirestoreService.addCourse(this.info))
   }
 
 }

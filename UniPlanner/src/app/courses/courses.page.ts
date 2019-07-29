@@ -65,6 +65,10 @@ export class CoursesPage implements OnInit {
       component: AddNewCoursePage
     })
     modal.onDidDismiss().then(resolve => {
+      if(!resolve.data){
+        //TODO: Popup to alert user that course already exists.
+        console.log("Course exists")
+      }
       this.ngOnInit()
     }).catch(err => console.log(err))
 

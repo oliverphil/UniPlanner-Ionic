@@ -16,12 +16,20 @@ export class FirestoreService {
   }
 
   static addCourse(data) {
-    firebase.firestore().collection(`/users/${userDetails().uid}/courses/`).doc(data.code).set(data)
-        .then(res => {
-      return true;
-    }).catch(err => {
-      return false;
+    let col = firebase.firestore().collection(`/users/${userDetails().uid}/courses/`)
+    col.doc(data.code).get().then(res => {
+      if(!res.exists){
+        col.doc(data.code).set(data)
+            .then(res => {
+              return true;
+            }).catch(err => {
+              return false;
+            })
+      } else {
+        return false;
+      }
     })
+
   }
 
 }
