@@ -12,13 +12,11 @@ export class EditCoursePage implements OnInit {
   private courseData: any
   private classTimes: object
 
-  constructor(private navParams: NavParams,
-              private database: FirestoreService
-  ) {}
+  constructor(private navParams: NavParams) {}
 
   ngOnInit() {
     this.courseData = this.navParams.get("courseData")
-    this.database.fetchCourseInfo(this.courseData.code)
+    FirestoreService.fetchCourseInfo(this.courseData.code)
     console.log(this.courseData)
   }
 

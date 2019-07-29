@@ -14,13 +14,10 @@ export class AddNewCoursePage {
     details: ''
   }
 
-  constructor(private database: FirestoreService,
-              private modalCtrl: ModalController,
-              private navCtrl: NavController
-  ) {}
+  constructor(private modalCtrl: ModalController) {}
 
   handleSubmit() {
-    this.database.addCourse(this.info)
+    FirestoreService.addCourse(this.info)
     this.modalCtrl.dismiss()
   }
 

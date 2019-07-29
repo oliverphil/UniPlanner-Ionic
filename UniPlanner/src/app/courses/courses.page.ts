@@ -18,14 +18,13 @@ export class CoursesPage implements OnInit {
   constructor(
       private authService: AuthenticationService,
       private navCtrl: NavController,
-      private database: FirestoreService,
       private modalCtrl: ModalController,
   ) {
 
   }
 
   ngOnInit(){
-    this.database.fetchCourseList().then(data => {
+    FirestoreService.fetchCourseList().then(data => {
       let courses = []
       if(!data.empty) {
         data.docs.forEach(course => {
