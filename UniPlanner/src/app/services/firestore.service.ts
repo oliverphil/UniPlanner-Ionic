@@ -8,8 +8,12 @@ import {firestore} from "firebase";
 })
 export class FirestoreService {
 
-  fetchCourseData() {
+  fetchCourseList() {
     return firebase.firestore().collection(`/users/${userDetails().uid}/courses/`).get()
+  }
+
+  fetchCourseInfo(courseCode) {
+    return firebase.firestore().collection(`/users/${userDetails().uid}/courses/${courseCode}/classes`).get()
   }
 
   addCourse(data) {

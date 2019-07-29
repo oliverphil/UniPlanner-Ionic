@@ -4,6 +4,7 @@ import {NavController} from "@ionic/angular";
 import {FirestoreService} from "../services/firestore.service";
 import { ModalController } from "@ionic/angular";
 import {AddNewCoursePage} from "../add-new-course/add-new-course.page";
+import {EditCoursePage} from "../edit-course/edit-course.page";
 
 @Component({
   selector: 'app-courses',
@@ -24,7 +25,7 @@ export class CoursesPage implements OnInit {
   }
 
   ngOnInit(){
-    this.database.fetchCourseData().then(data => {
+    this.database.fetchCourseList().then(data => {
       let courses = []
       if(!data.empty) {
         data.docs.forEach(course => {
@@ -36,12 +37,31 @@ export class CoursesPage implements OnInit {
     })
   }
 
-  newCourse() {
-    this.presentModal()
+  onClick(course){
+    this.presentEditCourseModal(course)
     this.ngOnInit()
   }
 
-  async presentModal() {
+  newCourse() {
+    this.presentNewCourseModal()
+    this.ngOnInit()
+  }
+
+  async presentEditCourseModal(course) {
+    let modal = await this.modalCtrl.create({
+      component: EditCoursePage,
+      componentProps: {
+        "courseData": course
+      }
+    })
+    modal.onDidDismiss().then(resolve => {
+      this.ngOnInit()
+    }).catch(err => console.log(err))
+
+    return await modal.present();
+  }
+
+  async presentNewCourseModal() {
     let modal = await this.modalCtrl.create({
       component: AddNewCoursePage
     })
