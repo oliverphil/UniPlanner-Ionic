@@ -28,7 +28,11 @@ export class AddNewCoursePage {
   }
 
   handleSubmit() {
-    this.modalCtrl.dismiss(FirestoreService.addCourse(this.info))
+    if(this.new) {
+      this.modalCtrl.dismiss(FirestoreService.addCourse(this.info))
+    }else{
+      this.modalCtrl.dismiss(FirestoreService.editCourse(this.info))
+    }
   }
 
 }

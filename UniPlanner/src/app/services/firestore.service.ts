@@ -29,7 +29,11 @@ export class FirestoreService {
         return false;
       }
     })
+  }
 
+  static editCourse(data) {
+    return firebase.firestore().collection(`/users/${userDetails().uid}/courses/`)
+        .doc(data.code).set(data).then(res => {return true}, err => {return false});
   }
 
 }
