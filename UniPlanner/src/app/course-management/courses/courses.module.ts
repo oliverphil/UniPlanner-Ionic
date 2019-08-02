@@ -7,7 +7,6 @@ import { IonicModule } from '@ionic/angular';
 
 import { CoursesPage } from './courses.page';
 import {AddNewCoursePage} from "../add-new-course/add-new-course.page";
-import {EditCoursePage} from "../edit-course/edit-course.page";
 
 const routes: Routes = [
   {
@@ -23,8 +22,8 @@ const routes: Routes = [
         IonicModule,
         RouterModule.forChild(routes)
     ],
-  declarations: [CoursesPage, AddNewCoursePage, EditCoursePage],
-  entryComponents: [AddNewCoursePage, EditCoursePage],
-  exports: [AddNewCoursePage, EditCoursePage]
+  declarations: [CoursesPage, AddNewCoursePage],
+  entryComponents: [AddNewCoursePage],
+  exports: [AddNewCoursePage]
 })
 export class CoursesPageModule {}

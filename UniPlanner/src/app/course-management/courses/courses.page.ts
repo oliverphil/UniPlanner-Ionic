@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {AuthenticationService} from "../services/authentication.service";
+import {AuthenticationService} from "../../services/authentication.service";
 import {NavController} from "@ionic/angular";
-import {FirestoreService} from "../services/firestore.service";
+import {FirestoreService} from "../../services/firestore.service";
 import { ModalController } from "@ionic/angular";
 import {AddNewCoursePage} from "../add-new-course/add-new-course.page";
-import {EditCoursePage} from "../edit-course/edit-course.page";
 
 @Component({
   selector: 'app-courses',
@@ -48,9 +47,13 @@ export class CoursesPage implements OnInit {
 
   async presentEditCourseModal(course) {
     let modal = await this.modalCtrl.create({
-      component: EditCoursePage,
+      component: AddNewCoursePage,
       componentProps: {
-        "courseData": course
+        "header": "Edit Course",
+        "new": false,
+        "button": "Edit",
+        "code": course.code,
+        "details": course.details,
       }
     })
     modal.onDidDismiss().then(resolve => {
@@ -62,7 +65,14 @@ export class CoursesPage implements OnInit {
 
   async presentNewCourseModal() {
     let modal = await this.modalCtrl.create({
-      component: AddNewCoursePage
+      component: AddNewCoursePage,
+      componentProps: {
+        "header": "Add a Course",
+        "new": false,
+        "button": "Add Course",
+        "code": "",
+        "details": "",
+      }
     })
     modal.onDidDismiss().then(resolve => {
       if(!resolve.data){

@@ -1,6 +1,11 @@
 <ion-header>
     <ion-toolbar>
-        <ion-title>Add a Course</ion-title>
+        <ion-buttons slot="start">
+            <ion-button (click)="modalCtrl.dismiss()">
+                <ion-icon icon="arrow-back"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>{{this.header}}</ion-title>
     </ion-toolbar>
 </ion-header>
 
@@ -16,6 +21,6 @@
             <ion-textarea name="details" [(ngModel)]="info.details"></ion-textarea>
         </ion-item>
 
-        <ion-button expand="block" class="submit-btn" type="submit" [disabled]="info.code === ''">Add Course</ion-button>
+        <ion-button expand="block" class="submit-btn" type="submit" [disabled]="info.code === ''">{{this.button}}</ion-button>
     </form>
 </ion-content>

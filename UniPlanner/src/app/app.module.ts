@@ -18,8 +18,8 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {AngularFireModule} from "@angular/fire";
 import {FirestoreService} from "./services/firestore.service";
 import {AngularFirestore} from "@angular/fire/firestore";
-import {AddNewCoursePage} from "./add-new-course/add-new-course.page";
-import {CoursesPage} from "./courses/courses.page";
+import {AddNewCoursePage} from "./course-management/add-new-course/add-new-course.page";
+import {CoursesPage} from "./course-management/courses/courses.page";
 
 @NgModule({
   declarations: [AppComponent],

@@ -3,6 +3,11 @@
         <ion-menu type="overlay" *ngIf="checkAuth()">
             <ion-header>
                 <ion-toolbar>
+                    <ion-buttons slot="start">
+                        <ion-button (click)="closeMenu()">
+                            <ion-icon icon="arrow-back"></ion-icon>
+                        </ion-button>
+                    </ion-buttons>
                     <ion-title>Menu</ion-title>
                 </ion-toolbar>
             </ion-header>
