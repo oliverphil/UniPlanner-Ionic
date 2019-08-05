@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="modalCtrl.dismiss()">
+        <ion-icon icon="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Add a Class</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-item>
+      <ion-label>Course</ion-label>
+      <ion-select placeholder="Course" mode="md" interface="action-sheet">
+        <ion-select-option *ngFor="let course of this.courses">{{course.code}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-input type="text" placeholder="Description" [(ngModel)]="event.desc"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Start Time</ion-label>
+      <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="event.startTime" [min]="minDate"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label>End Time</ion-label>
+      <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="event.endTime" [min]="minDate"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label>All Day?</ion-label>
+      <ion-checkbox [(ngModel)]="event.allDay"></ion-checkbox>
+    </ion-item>
+    <ion-button fill="outline" expand="block" (click)="addEvent()" [disabled]="!verifySubmit()">Add Event</ion-button>
+</ion-content>

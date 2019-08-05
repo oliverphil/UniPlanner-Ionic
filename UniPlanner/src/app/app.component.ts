@@ -17,9 +17,19 @@ export class AppComponent {
       icon: 'home'
     },
     {
+      title: 'Calendar',
+      url: '/calendar',
+      icon: 'calendar'
+    },
+    {
       title: 'Courses',
       url: '/courses',
       icon: 'list'
+    },
+    {
+      title: 'Classes',
+      url: '/classes',
+      icon: 'book'
     }
   ];
 

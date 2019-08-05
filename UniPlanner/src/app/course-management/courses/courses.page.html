@@ -19,7 +19,7 @@
     <ion-item *ngFor="let course of courses" >
       <ion-item class="course" (click)="onClick(course)">
         <p class="code">{{course.code}}</p>
-        {{course.details}}
+        <p>{{course.details}}</p>
       </ion-item>
     </ion-item>
   </ion-content>

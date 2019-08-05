@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Classes</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-content *ngIf="this.classes && this.classes.length > 0" class="course-wrapper">
+    <ion-item *ngFor="let cls of classes" >
+      <ion-item class="class" >
+        <p class="code">{{cls.code}} {{cls.type}}</p>
+        <p class="info">
+          {{convert24to12(cls.startTime)}} - {{convert24to12(cls.endTime)}}<br />
+          {{daysToString(cls.day)}}<br />
+          Room: {{cls.room}}
+        </p>
+      </ion-item>
+    </ion-item>
+  </ion-content>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="newClass()">
+    <ion-fab-button>
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

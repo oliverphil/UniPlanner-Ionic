@@ -21,6 +21,9 @@ const routes: Routes = [
   { path: 'login', loadChildren: './login/login.module#LoginPageModule' },
   { path: 'register', loadChildren: './register/register.module#RegisterPageModule' },
   { path: 'courses', loadChildren: './course-management/courses/courses.module#CoursesPageModule', canActivate: [AuthGuard] },
+  { path: 'classes', loadChildren: './course-management/classes/classes.module#ClassesPageModule', canActivate: [AuthGuard] },
+  { path: 'calendar', loadChildren: './calendar/calendar.module#CalendarPageModule', canActivate: [AuthGuard] },
+  { path: 'add-new-class', loadChildren: './course-management/add-new-class/add-new-class.module#AddNewClassPageModule' },
 ];
 
 @NgModule({

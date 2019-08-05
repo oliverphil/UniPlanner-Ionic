@@ -19,7 +19,8 @@ export class AddNewCoursePage {
   private button: string;
 
   constructor(private modalCtrl: ModalController,
-              private navParams: NavParams) {
+              private navParams: NavParams,
+              private db: FirestoreService) {
     this.info.code = navParams.get("code");
     this.info.details = navParams.get("details");
     this.new = navParams.get("new");
@@ -29,7 +30,7 @@ export class AddNewCoursePage {
 
   handleSubmit() {
     if(this.new) {
-      this.modalCtrl.dismiss(FirestoreService.addCourse(this.info))
+      this.modalCtrl.dismiss(this.db.addCourse(this.info))
     }else{
       this.modalCtrl.dismiss(FirestoreService.editCourse(this.info))
     }

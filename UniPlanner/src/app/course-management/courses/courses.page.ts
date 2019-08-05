@@ -37,12 +37,12 @@ export class CoursesPage implements OnInit {
 
   onClick(course){
     this.presentEditCourseModal(course)
-    this.ngOnInit()
+    // this.ngOnInit()
   }
 
   newCourse() {
     this.presentNewCourseModal()
-    this.ngOnInit()
+    // this.ngOnInit()
   }
 
   async presentEditCourseModal(course) {
@@ -75,6 +75,7 @@ export class CoursesPage implements OnInit {
       }
     })
     modal.onDidDismiss().then(resolve => {
+      console.log(resolve)
       if(!resolve.data){
         //TODO: Popup to alert user that course already exists.
         console.log("Course exists")

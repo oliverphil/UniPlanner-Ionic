@@ -11,11 +11,25 @@ export class FirestoreService {
     return firebase.firestore().collection(`/users/${userDetails().uid}/courses/`).get()
   }
 
-  static fetchCourseInfo(courseCode) {
+  static fetchClassInfo(courseCode) {
     return firebase.firestore().collection(`/users/${userDetails().uid}/courses/${courseCode}/classes`).get()
   }
 
-  static addCourse(data) {
+  static fetchAllClasses() {
+    let classes = []
+    firebase.firestore().collection(`/users/${userDetails().uid}/courses/`).get().then(res => {
+      res.docs.forEach(doc => {
+        this.fetchClassInfo(doc.id).then(cls => {
+          cls.docs.forEach(doc => {
+            classes.push(doc.data())
+          })
+        })
+      })
+    })
+    return classes
+  }
+
+  addCourse(data) {
     let col = firebase.firestore().collection(`/users/${userDetails().uid}/courses/`)
     col.doc(data.code).get().then(res => {
       if(!res.exists){
@@ -28,7 +42,7 @@ export class FirestoreService {
       } else {
         return false;
       }
-    })
+    }).catch(err => console.log(err))
   }
 
   static editCourse(data) {
