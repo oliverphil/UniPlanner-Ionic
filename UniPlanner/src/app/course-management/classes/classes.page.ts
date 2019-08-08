@@ -3,6 +3,7 @@ import { FirestoreService } from "../../services/firestore.service";
 import {AddNewCoursePage} from "../add-new-course/add-new-course.page";
 import {ModalController} from "@ionic/angular";
 import {AddNewClassPage} from "../add-new-class/add-new-class.page";
+import {UtilsService} from "../../services/utils.service";
 
 @Component({
   selector: 'app-classes',
@@ -12,31 +13,20 @@ import {AddNewClassPage} from "../add-new-class/add-new-class.page";
 export class ClassesPage implements OnInit {
 
   private classes: any[]
+    private daysToString = UtilsService.daysToString
+    private convert24to12 = UtilsService.convert24to12
 
   constructor(private modalCtrl: ModalController) {
 
   }
 
-  ngOnInit() {
-    this.classes = FirestoreService.fetchAllClasses()
+  async ngOnInit() {
+    this.classes = await FirestoreService.fetchAllClasses().then(res => {
+      return res
+    })
   }
 
-  convert24to12(time){
-    let hr = ((time % 1200) / 100).toString().split(".")[0];
-    let min = time.toString().substring(2, 4)
-    return `${hr}:${min}${time < 1300 ? 'AM' : 'PM'}`;
-  }
 
-  daysToString(days){
-    let str = ""
-    for(let day of days) {
-      if(str.length > 0){
-        str = str + ", "
-      }
-      str = str + (day.toLocaleUpperCase()).substring(0, 3)
-    }
-    return str;
-  }
 
   newClass() {
     this.presentNewClassModal()

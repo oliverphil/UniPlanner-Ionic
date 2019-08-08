@@ -2,6 +2,7 @@ import {Component, Inject, LOCALE_ID, OnInit, ViewChild} from '@angular/core';
 import {CalendarComponent} from "ionic2-calendar/calendar";
 import {AlertController} from "@ionic/angular";
 import {formatDate} from "@angular/common";
+import {FirestoreService} from "../services/firestore.service";
 
 @Component({
   selector: 'app-calendar',
@@ -28,12 +29,63 @@ export class CalendarPage implements OnInit {
 
   @ViewChild(CalendarComponent) myCal: CalendarComponent;
 
-  constructor(private alertCtrl: AlertController, @Inject(LOCALE_ID) private locale: string) { }
+  constructor(private alertCtrl: AlertController, @Inject(LOCALE_ID) private locale: string) {}
 
-  ngOnInit() {
+  async ngOnInit() {
+    let classes = await FirestoreService.fetchAllClasses()
+    let events = []
+    for(let cls of classes){
+      for(let day of cls.day){
+        let startDate = this.makeDate(cls.startTime, day)
+        // startDate.setTime(cls.startTime)
+        let endDate = this.makeDate(cls.endTime, day)
+        // endDate.setTime(cls.endTime)
+        events.push({
+          title: cls.code,
+          desc: cls.type,
+          startTime: startDate,
+          endTime: endDate,
+          allDay: false
+        })
+      }
+    }
+    this.eventSource = events;
   }
 
+  makeDate(time, day){
+    let date = new Date(Date.now())
+    let dayNum = this.getDayNum(day)
+    let todayNum = date.getDay()
+    date.setDate(date.getDate() + (dayNum - todayNum))
+    let hour12 = this.convert24to12(time)
+    date.setHours(hour12[0], hour12[1], 0)
+    return date
+  }
 
+  convert24to12(time){
+    let hr = time.toString().substring(0, 2);
+    let min = time.toString().substring(2, 4)
+    return [hr, min]
+  }
+
+  getDayNum(day) {
+    switch(day) {
+      case "monday":
+        return 1;
+      case "tuesday":
+        return 2;
+      case "wednesday":
+        return 3;
+      case "thursday":
+        return 4;
+      case "friday":
+        return 5;
+      case "saturday":
+        return 6;
+      default:
+        return 7;
+    }
+  }
 
   // Change current month/week/day
   next() {
@@ -48,6 +100,7 @@ export class CalendarPage implements OnInit {
 
 // Change between month/week/day
   changeMode(mode) {
+    console.log(this.eventSource)
     this.calendar.mode = mode;
   }
 

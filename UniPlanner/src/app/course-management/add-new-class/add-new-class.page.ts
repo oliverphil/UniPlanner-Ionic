@@ -14,8 +14,18 @@ export class AddNewClassPage implements OnInit {
     desc: '',
     startTime: '',
     endTime: '',
-    allDay: false
+    days: []
   };
+
+  private days: string[] = [
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+      'Sunday'
+    ]
 
   private courses: any[]
 
@@ -38,7 +48,7 @@ export class AddNewClassPage implements OnInit {
       desc: '',
       startTime: '',
       endTime: '',
-      allDay: false
+      days: []
     };
   }
 
@@ -48,22 +58,15 @@ export class AddNewClassPage implements OnInit {
       code: this.event.code,
       startTime:  new Date(this.event.startTime),
       endTime: new Date(this.event.endTime),
-      allDay: this.event.allDay,
-      desc: this.event.desc
+      desc: this.event.desc,
+      days: this.event.days
     }
 
-    if (eventCopy.allDay) {
-      let start = eventCopy.startTime;
-      let end = eventCopy.endTime;
-
-      eventCopy.startTime = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate()));
-      eventCopy.endTime = new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), end.getUTCDate() + 1));
-    }
-
-    this.resetEvent();
+    this.modalCtrl.dismiss()
   }
 
   verifySubmit() {
+    console.log(this.event)
     return this.event.code !== '' && this.event.endTime !== '' && this.event.startTime !== ''
   }
 

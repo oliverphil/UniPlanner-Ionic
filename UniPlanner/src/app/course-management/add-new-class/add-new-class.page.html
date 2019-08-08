@@ -12,7 +12,7 @@
 <ion-content>
     <ion-item>
       <ion-label>Course</ion-label>
-      <ion-select placeholder="Course" mode="md" interface="action-sheet">
+      <ion-select placeholder="Course" mode="md" interface="action-sheet" [(ngModel)]="event.code">
         <ion-select-option *ngFor="let course of this.courses">{{course.code}}</ion-select-option>
       </ion-select>
     </ion-item>
@@ -28,8 +28,7 @@
       <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="event.endTime" [min]="minDate"></ion-datetime>
     </ion-item>
     <ion-item>
-      <ion-label>All Day?</ion-label>
-      <ion-checkbox [(ngModel)]="event.allDay"></ion-checkbox>
+
     </ion-item>
     <ion-button fill="outline" expand="block" (click)="addEvent()" [disabled]="!verifySubmit()">Add Event</ion-button>
 </ion-content>

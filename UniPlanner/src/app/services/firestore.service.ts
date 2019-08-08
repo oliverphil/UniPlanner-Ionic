@@ -11,21 +11,33 @@ export class FirestoreService {
     return firebase.firestore().collection(`/users/${userDetails().uid}/courses/`).get()
   }
 
-  static fetchClassInfo(courseCode) {
-    return firebase.firestore().collection(`/users/${userDetails().uid}/courses/${courseCode}/classes`).get()
-  }
-
-  static fetchAllClasses() {
+  static async fetchClassInfo(courseCode) {
     let classes = []
-    firebase.firestore().collection(`/users/${userDetails().uid}/courses/`).get().then(res => {
-      res.docs.forEach(doc => {
-        this.fetchClassInfo(doc.id).then(cls => {
+    await firebase.firestore().collection(`/users/${userDetails().uid}/courses/${courseCode}/classes`).get()
+        .then(cls => {
           cls.docs.forEach(doc => {
             classes.push(doc.data())
           })
         })
-      })
+    return classes
+  }
+
+  static async fetchAllClasses() {
+    let courses = this.fetchCourseList();
+    let courseDocs = await courses.then(result => {
+      return result.docs
     })
+    let docs = []
+    courseDocs.forEach(doc => {
+      docs.push(doc.data())
+    })
+    let classes = []
+    for(let course of docs){
+      let cls = await this.fetchClassInfo(course.code).then(result => {
+        return result
+      })
+      classes = classes.concat(cls)
+    }
     return classes
   }
 
@@ -48,6 +60,51 @@ export class FirestoreService {
   static editCourse(data) {
     return firebase.firestore().collection(`/users/${userDetails().uid}/courses/`)
         .doc(data.code).set(data).then(res => {return true}, err => {return false});
+  }
+
+  static async fetchClassesToday() {
+    let allClasses = await this.fetchAllClasses()
+    let today = new Date(Date.now())
+    let todayClasses = []
+    for(let cls of allClasses) {
+      if(this.isClassOnDate(cls, today)){
+        todayClasses.push(cls)
+      }
+    }
+    return todayClasses;
+  }
+
+  static isClassOnDate(cls, date: Date): boolean {
+    let dayNum = date.getDay()
+    for(let day of cls.day) {
+      let thisDayNum
+      switch (day){
+        case "monday":
+          thisDayNum = 1;
+          break;
+        case "tuesday":
+          thisDayNum = 2;
+          break;
+        case "wednesday":
+          thisDayNum = 3;
+          break;
+        case "thursday":
+          thisDayNum = 4;
+          break;
+        case "friday":
+          thisDayNum = 5;
+          break;
+        case "saturday":
+          thisDayNum = 6;
+          break;
+        default:
+          thisDayNum = 7;
+      }
+      if(thisDayNum === dayNum)
+        return true;
+    }
+
+    return false;
   }
 
 }

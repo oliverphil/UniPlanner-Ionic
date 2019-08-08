@@ -2,3 +2,35 @@
   max-height: 35vh;
   overflow: hidden;
 }
+
+.code {
+  font-weight: bold;
+  margin-right: 1em;
+}
+
+.class {
+  width: 100%;
+  display: block;
+}
+
+.body-title {
+  margin-top: 1.5em;
+}
+
+ion-item {
+  margin-top: 0.2em;
+}
+
+.no-course {
+  text-align: center;
+}
+
+.no-course-wrapper{
+  display: block;
+  margin-top: 65%;
+}
+
+.course-wrapper {
+  display: block;
+  width: 100%;
+}
