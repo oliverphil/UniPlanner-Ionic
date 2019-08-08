@@ -107,4 +107,7 @@ export class FirestoreService {
     return false;
   }
 
+    static async deleteCourse(code) {
+        firebase.firestore().doc(`/users/${userDetails().uid}/courses/${code}`).delete()
+    }
 }

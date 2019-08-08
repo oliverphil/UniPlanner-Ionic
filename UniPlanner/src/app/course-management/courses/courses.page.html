@@ -17,9 +17,11 @@
 
   <ion-content *ngIf="this.courses && this.courses.length > 0" class="course-wrapper">
     <ion-item *ngFor="let course of courses" >
-      <ion-item class="course" (click)="onClick(course)">
+      <ion-item class="course">
         <p class="code">{{course.code}}</p>
         <p>{{course.details}}</p>
+        <ion-icon name="create" slot="end" (click)="onClick(course)"></ion-icon>
+        <ion-icon name="trash" slot="end" (click)="deleteCourse(course.code)"></ion-icon>
       </ion-item>
     </ion-item>
   </ion-content>

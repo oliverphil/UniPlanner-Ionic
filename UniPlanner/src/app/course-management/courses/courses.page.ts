@@ -45,6 +45,11 @@ export class CoursesPage implements OnInit {
     // this.ngOnInit()
   }
 
+  async deleteCourse(code) {
+    await FirestoreService.deleteCourse(code);
+    this.ngOnInit();
+  }
+
   async presentEditCourseModal(course) {
     let modal = await this.modalCtrl.create({
       component: AddNewCoursePage,
