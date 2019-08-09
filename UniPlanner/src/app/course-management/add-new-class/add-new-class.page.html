@@ -17,7 +17,7 @@
       </ion-select>
     </ion-item>
     <ion-item>
-      <ion-input type="text" placeholder="Description" [(ngModel)]="event.desc"></ion-input>
+      <ion-input type="text" placeholder="Description" [(ngModel)]="event.type"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>Start Time</ion-label>
@@ -28,7 +28,16 @@
       <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="event.endTime" [min]="minDate"></ion-datetime>
     </ion-item>
     <ion-item>
-
+        <ion-label>Days</ion-label>
+        <ion-select multiple="true" okText="Confirm" [(ngModel)]="event.day">
+            <ion-select-option value="monday">Monday</ion-select-option>
+            <ion-select-option value="tuesday">Tuesday</ion-select-option>
+            <ion-select-option value="wednesday">Wednesday</ion-select-option>
+            <ion-select-option value="thursday">Thursday</ion-select-option>
+            <ion-select-option value="friday">Friday</ion-select-option>
+            <ion-select-option value="saturday">Saturday</ion-select-option>
+            <ion-select-option value="sunday">Sunday</ion-select-option>
+        </ion-select>
     </ion-item>
     <ion-button fill="outline" expand="block" (click)="addEvent()" [disabled]="!verifySubmit()">Add Event</ion-button>
 </ion-content>

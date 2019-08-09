@@ -57,6 +57,16 @@ export class FirestoreService {
     }).catch(err => console.log(err))
   }
 
+  static addClass(data) {
+    let col = firebase.firestore().collection(`/users/${userDetails().uid}/courses/${data.code}/classes`)
+    let startTime = new Date(data.startTime)
+    let endTime = new Date(data.endTime)
+    data.startTime = (startTime.getHours() * 100) + startTime.getMinutes()
+    data.endTime = (endTime.getHours() * 100) + endTime.getMinutes()
+    console.log(data)
+    col.add(data)
+  }
+
   static editCourse(data) {
     return firebase.firestore().collection(`/users/${userDetails().uid}/courses/`)
         .doc(data.code).set(data).then(res => {return true}, err => {return false});
