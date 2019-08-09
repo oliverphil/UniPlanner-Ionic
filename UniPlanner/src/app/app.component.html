@@ -1,6 +1,6 @@
 <ion-app>
-    <ion-split-pane>
-        <ion-menu type="overlay" *ngIf="checkAuth()">
+    <ion-content *ngIf="checkAuth()">
+        <ion-menu type="overlay">
             <ion-header>
                 <ion-toolbar>
                     <ion-buttons slot="start">
@@ -23,10 +23,23 @@
                     </ion-menu-toggle>
                 </ion-list>
             </ion-content>
+            <ion-menu-toggle>
+               <ion-toolbar position="bottom">
+                    <ion-item (click)="logout()">
+                        <ion-icon slot="start" name="walk"></ion-icon>
+                        <ion-label>
+                            Sign Out
+                        </ion-label>
+                    </ion-item>
+                </ion-toolbar>
+            </ion-menu-toggle>
         </ion-menu>
 
         <ion-router-outlet main></ion-router-outlet>
+    </ion-content>
 
-    </ion-split-pane>
+    <ion-content *ngIf="!checkAuth()">
+        <ion-router-outlet main></ion-router-outlet>
+    </ion-content>
 
 </ion-app>

@@ -13,6 +13,8 @@ export class FirestoreService {
 
   static async fetchClassInfo(courseCode) {
     let classes = []
+    if(!userDetails())
+      return classes;
     await firebase.firestore().collection(`/users/${userDetails().uid}/courses/${courseCode}/classes`).get()
         .then(cls => {
           cls.docs.forEach(doc => {

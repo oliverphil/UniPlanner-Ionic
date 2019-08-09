@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 
-import {MenuController, Platform} from '@ionic/angular';
+import {MenuController, NavController, Platform} from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { userDetails } from "./services/authentication.service";
+import {AuthenticationService, userDetails} from "./services/authentication.service";
 
 @Component({
   selector: 'app-root',
@@ -39,7 +39,8 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private menuCtrl: MenuController
+    private menuCtrl: MenuController,
+    private navCtrl: NavController
   ) {
     this.initializeApp();
   }
@@ -53,6 +54,11 @@ export class AppComponent {
 
   closeMenu(){
     this.menuCtrl.close()
+  }
+
+  logout() {
+    AuthenticationService.logout()
+    this.navCtrl.navigateForward("/login")
   }
 
 }
