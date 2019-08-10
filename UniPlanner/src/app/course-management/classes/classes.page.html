@@ -16,7 +16,7 @@
   </ion-item>
 
   <ion-content *ngIf="this.classes && this.classes.length > 0" class="class-wrapper">
-    <ion-item *ngFor="let cls of classes" >
+    <ion-item *ngFor="let cls of classes" lines="none">
       <ion-item class="class" >
         <p class="code">{{cls.code}} {{cls.type}}</p>
         <p class="info">
@@ -24,6 +24,8 @@
           {{daysToString(cls.day)}}<br />
           Room: {{cls.room}}
         </p>
+        <ion-icon name="create" slot="end" (click)="editClass(cls)"></ion-icon>
+        <ion-icon name="trash" slot="end" (click)="deleteClass(cls)"></ion-icon>
       </ion-item>
     </ion-item>
   </ion-content>

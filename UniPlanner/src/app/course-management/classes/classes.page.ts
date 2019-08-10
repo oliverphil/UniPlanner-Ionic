@@ -26,8 +26,6 @@ export class ClassesPage implements OnInit {
     })
   }
 
-
-
   newClass() {
     this.presentNewClassModal()
   }
@@ -35,15 +33,41 @@ export class ClassesPage implements OnInit {
   async presentNewClassModal() {
     let modal = await this.modalCtrl.create({
       component: AddNewClassPage,
-      // componentProps: {
-      //   "header": "Add a Class",
-      //   "button": "Add Class",
-      // }
+      componentProps: {
+        "title": "Add a Class",
+        "button": "Add Class",
+      }
     })
     modal.onDidDismiss().then(resolve => {
       this.ngOnInit()
     }).catch(err => console.log(err))
 
     return await modal.present();
+  }
+
+  async presentEditClassModal(cls) {
+    let clsCopy = {...cls}
+    let modal = await this.modalCtrl.create({
+      component: AddNewClassPage,
+      componentProps: {
+        "cls": clsCopy,
+        "title": "Edit Class",
+        "button": "Edit",
+      }
+    })
+    modal.onDidDismiss().then(resolve => {
+      this.ngOnInit()
+    }).catch(err => console.log(err))
+
+    return await modal.present();
+  }
+
+  editClass(cls) {
+    this.presentEditClassModal(cls)
+  }
+
+  deleteClass(cls) {
+    FirestoreService.deleteClass(cls)
+    this.ngOnInit()
   }
 }

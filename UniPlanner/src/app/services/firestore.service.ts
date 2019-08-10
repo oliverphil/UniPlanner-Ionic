@@ -18,7 +18,9 @@ export class FirestoreService {
     await firebase.firestore().collection(`/users/${userDetails().uid}/courses/${courseCode}/classes`).get()
         .then(cls => {
           cls.docs.forEach(doc => {
-            classes.push(doc.data())
+            let data = doc.data()
+            data.id = doc.id
+            classes.push(data)
           })
         })
     return classes
@@ -121,5 +123,14 @@ export class FirestoreService {
 
     static async deleteCourse(code) {
         firebase.firestore().doc(`/users/${userDetails().uid}/courses/${code}`).delete()
+    }
+
+    static async deleteClass(cls) {
+      firebase.firestore().doc(`/users/${userDetails().uid}/courses/${cls.code}/classes/${cls.id}`).delete()
+    }
+
+    static editClass(cls) {
+      return firebase.firestore().collection(`/users/${userDetails().uid}/courses/${cls.code}/classes/`)
+          .doc(cls.id).set(cls).then(res => {return true}, err => {return false})
     }
 }

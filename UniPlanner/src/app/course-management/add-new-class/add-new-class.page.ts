@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FirestoreService } from "../../services/firestore.service";
-import {ModalController} from "@ionic/angular";
+import {ModalController, NavParams} from "@ionic/angular";
+import {UtilsService} from "../../services/utils.service";
 
 @Component({
   selector: 'app-add-new-class',
@@ -14,14 +15,30 @@ export class AddNewClassPage implements OnInit {
     type: '',
     startTime: '',
     endTime: '',
-    day: []
+    day: [],
+    room: ''
   };
 
   private courses: any[]
+  private title: string
+  private button: string
+  private edit: boolean = false
 
   minDate = new Date().toISOString();
 
-  constructor(private modalCtrl: ModalController) {}
+  constructor(private modalCtrl: ModalController,
+              private navParams: NavParams) {
+    this.title = navParams.get('title')
+    this.button = navParams.get('button')
+    let cls = this.navParams.get('cls')
+    if(cls){
+      this.event = cls
+      this.event.startTime = UtilsService.makeDate(this.event.startTime, 0).toString()
+      this.event.endTime = UtilsService.makeDate(this.event.endTime, 0).toString()
+      this.edit = true;
+    }
+    console.log(this.event)
+  }
 
   ngOnInit() {
     let courses = []
@@ -38,14 +55,19 @@ export class AddNewClassPage implements OnInit {
       type: '',
       startTime: '',
       endTime: '',
-      day: []
+      day: [],
+      room: ''
     };
   }
 
   // Create the right event format and reload source
   addEvent() {
-    FirestoreService.addClass(this.event)
-    this.modalCtrl.dismiss()
+    if(this.edit){
+      FirestoreService.editClass(this.event)
+    } else {
+      FirestoreService.addClass(this.event)
+      this.modalCtrl.dismiss()
+    }
   }
 
   verifySubmit() {

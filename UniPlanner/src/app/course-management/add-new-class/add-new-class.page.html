@@ -5,7 +5,7 @@
         <ion-icon icon="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>Add a Class</ion-title>
+    <ion-title>{{this.title}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -39,5 +39,8 @@
             <ion-select-option value="sunday">Sunday</ion-select-option>
         </ion-select>
     </ion-item>
-    <ion-button fill="outline" expand="block" (click)="addEvent()" [disabled]="!verifySubmit()">Add Event</ion-button>
+    <ion-item>
+        <ion-input type="text" placeholder="Room" [(ngModel)]="event.room"></ion-input>
+    </ion-item>
+    <ion-button fill="outline" expand="block" (click)="addEvent()" [disabled]="!verifySubmit()">{{this.button}}</ion-button>
 </ion-content>
