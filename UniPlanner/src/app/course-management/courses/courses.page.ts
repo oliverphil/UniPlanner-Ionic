@@ -19,13 +19,17 @@ export class CoursesPage implements OnInit {
       private authService: AuthenticationService,
       private navCtrl: NavController,
       private modalCtrl: ModalController,
+      private db: FirestoreService
   ) {
 
   }
 
   async ngOnInit(){
-    this.waiting = true
-    await FirestoreService.fetchCourseList().then(data => {
+    this.courses = this.db.fetchCourseListNow()
+    if(!this.courses || this.courses.length < 1) {
+      this.waiting = true
+    }
+    await this.db.fetchCourseList().then(data => {
       let courses = []
       if(!data.empty) {
         data.docs.forEach(course => {

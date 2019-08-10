@@ -27,7 +27,9 @@ export class AddNewClassPage implements OnInit {
   minDate = new Date().toISOString();
 
   constructor(private modalCtrl: ModalController,
-              private navParams: NavParams) {
+              private navParams: NavParams,
+              private db: FirestoreService
+  ) {
     this.title = navParams.get('title')
     this.button = navParams.get('button')
     let cls = this.navParams.get('cls')
@@ -42,7 +44,7 @@ export class AddNewClassPage implements OnInit {
 
   ngOnInit() {
     let courses = []
-    FirestoreService.fetchCourseList().then(data => {
+    this.db.fetchCourseList().then(data => {
       for(let doc of data.docs)
         courses.push(doc.data())
     })
@@ -65,7 +67,7 @@ export class AddNewClassPage implements OnInit {
     if(this.edit){
       FirestoreService.editClass(this.event)
     } else {
-      FirestoreService.addClass(this.event)
+      this.db.addClass(this.event)
       this.modalCtrl.dismiss()
     }
   }

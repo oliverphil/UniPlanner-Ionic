@@ -17,13 +17,16 @@ export class ClassesPage implements OnInit {
   private convert24to12 = UtilsService.convert24to12
   private waiting: boolean = false
 
-  constructor(private modalCtrl: ModalController) {
+  constructor(
+      private modalCtrl: ModalController,
+      private db: FirestoreService
+  ) {
 
   }
 
   async ngOnInit() {
     this.waiting = true
-    this.classes = await FirestoreService.fetchAllClasses().then(res => {
+    this.classes = await this.db.fetchAllClasses().then(res => {
       return res
     })
     this.waiting = false

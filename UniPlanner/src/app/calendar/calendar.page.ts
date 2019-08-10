@@ -32,17 +32,25 @@ export class CalendarPage implements OnInit {
 
   @ViewChild(CalendarComponent) myCal: CalendarComponent;
 
-  constructor(private alertCtrl: AlertController, @Inject(LOCALE_ID) private locale: string) {
-    this.waiting = true;
-    this.refreshCalendar().then(res => {this.waiting = false})
+  constructor(private alertCtrl: AlertController,
+              @Inject(LOCALE_ID) private locale: string,
+              private db: FirestoreService) {
   }
 
   async ngOnInit() {
-    this.refreshCalendar()
+    this.eventSource = this.classesToEvents(this.db.fetchAllClassesNow())
+    if(!this.eventSource || this.eventSource.length < 1) {
+      this.waiting = true;
+    }
+    this.refreshCalendar().then(res => {this.waiting = false})
   }
 
   async refreshCalendar() {
-    let classes = await FirestoreService.fetchAllClasses()
+    let classes = await this.db.fetchAllClasses()
+    this.eventSource = this.classesToEvents(classes);
+  }
+
+  classesToEvents(classes) {
     let events = []
     for(let cls of classes){
       for(let day of cls.day){
@@ -59,7 +67,7 @@ export class CalendarPage implements OnInit {
         })
       }
     }
-    this.eventSource = events;
+    return events
   }
 
 // Change between month/week/day

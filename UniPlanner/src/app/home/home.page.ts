@@ -18,12 +18,13 @@ export class HomePage implements OnInit {
 
   constructor(
       private navCtrl: NavController,
-      private authService: AuthenticationService
+      private authService: AuthenticationService,
+      private db: FirestoreService
   ) { }
 
   async ngOnInit() {
     this.waiting = true;
-    this.classes = await FirestoreService.fetchClassesToday()
+    this.classes = await this.db.fetchClassesToday()
     this.waiting = false
   }
 
