@@ -13,17 +13,20 @@ import {UtilsService} from "../../services/utils.service";
 export class ClassesPage implements OnInit {
 
   private classes: any[]
-    private daysToString = UtilsService.daysToString
-    private convert24to12 = UtilsService.convert24to12
+  private daysToString = UtilsService.daysToString
+  private convert24to12 = UtilsService.convert24to12
+  private waiting: boolean = false
 
   constructor(private modalCtrl: ModalController) {
 
   }
 
   async ngOnInit() {
+    this.waiting = true
     this.classes = await FirestoreService.fetchAllClasses().then(res => {
       return res
     })
+    this.waiting = false
   }
 
   newClass() {

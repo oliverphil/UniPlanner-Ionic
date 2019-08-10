@@ -7,7 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content *ngIf="!this.waiting">
 
   <ion-row>
     <!-- Change the displayed calendar mode -->
@@ -31,4 +31,10 @@
           step="60"
           startingDayWeek="1">
   </calendar>
+</ion-content>
+
+<ion-content *ngIf="this.waiting">
+  <ion-item id="spinner" lines="none">
+    <ion-spinner></ion-spinner>
+  </ion-item>
 </ion-content>

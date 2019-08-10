@@ -7,7 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content *ngIf="!this.waiting">
   <ion-item *ngIf="!this.classes || this.classes.length === 0" class="no-class-wrapper">
     <ion-content *ngIf="!this.classes || this.classes.length === 0" class="no-class">
       It doesn't look like there are any classes here.<br/>
@@ -35,4 +35,10 @@
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
+</ion-content>
+
+<ion-content *ngIf="this.waiting">
+  <ion-item id="spinner" lines="none">
+    <ion-spinner></ion-spinner>
+  </ion-item>
 </ion-content>

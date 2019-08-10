@@ -7,7 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content id="courses-content">
+<ion-content id="courses-content" *ngIf="!this.waiting">
   <ion-item *ngIf="!this.courses || this.courses.length === 0" class="no-course-wrapper">
     <ion-content *ngIf="!this.courses || this.courses.length === 0" class="no-course">
       It doesn't look like there are any courses here.<br/>
@@ -16,7 +16,7 @@
   </ion-item>
 
   <ion-content *ngIf="this.courses && this.courses.length > 0" class="course-wrapper">
-    <ion-item *ngFor="let course of courses" >
+    <ion-item *ngFor="let course of courses" lines="none">
       <ion-item class="course">
         <p class="code">{{course.code}}</p>
         <p>{{course.details}}</p>
@@ -31,4 +31,10 @@
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
+</ion-content>
+
+<ion-content *ngIf="this.waiting">
+  <ion-item id="spinner" lines="none">
+    <ion-spinner></ion-spinner>
+  </ion-item>
 </ion-content>

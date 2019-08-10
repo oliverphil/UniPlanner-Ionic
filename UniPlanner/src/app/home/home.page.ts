@@ -14,6 +14,7 @@ export class HomePage implements OnInit {
   private classes: any[]
   private tasks: any[]
   private convert24to12 = UtilsService.convert24to12
+  private waiting: boolean
 
   constructor(
       private navCtrl: NavController,
@@ -21,7 +22,9 @@ export class HomePage implements OnInit {
   ) { }
 
   async ngOnInit() {
+    this.waiting = true;
     this.classes = await FirestoreService.fetchClassesToday()
+    this.waiting = false
   }
 
 }

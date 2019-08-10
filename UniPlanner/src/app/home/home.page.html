@@ -9,14 +9,14 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content *ngIf="!this.waiting">
   <ion-item *ngIf="!this.classes || classes.length === 0">
     There are no classes today!
   </ion-item>
 
   <ion-content *ngIf="this.classes && this.classes.length > 0" class="course-wrapper">
     <ion-item id="body-title">Classes Today:</ion-item>
-    <ion-item *ngFor="let cls of classes" >
+    <ion-item *ngFor="let cls of classes" lines="none">
       <ion-item class="class" >
         <p class="code">{{cls.code}} {{cls.type}}</p>
         <p class="info">
@@ -26,4 +26,10 @@
       </ion-item>
     </ion-item>
   </ion-content>
+</ion-content>
+
+<ion-content *ngIf="this.waiting">
+  <ion-item id="spinner" lines="none">
+    <ion-spinner></ion-spinner>
+  </ion-item>
 </ion-content>

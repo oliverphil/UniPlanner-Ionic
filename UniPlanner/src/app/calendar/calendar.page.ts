@@ -28,11 +28,20 @@ export class CalendarPage implements OnInit {
     allDay: false
   };
 
+  private waiting: boolean
+
   @ViewChild(CalendarComponent) myCal: CalendarComponent;
 
-  constructor(private alertCtrl: AlertController, @Inject(LOCALE_ID) private locale: string) {}
+  constructor(private alertCtrl: AlertController, @Inject(LOCALE_ID) private locale: string) {
+    this.waiting = true;
+    this.refreshCalendar().then(res => {this.waiting = false})
+  }
 
   async ngOnInit() {
+    this.refreshCalendar()
+  }
+
+  async refreshCalendar() {
     let classes = await FirestoreService.fetchAllClasses()
     let events = []
     for(let cls of classes){

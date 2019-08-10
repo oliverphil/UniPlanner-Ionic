@@ -13,6 +13,7 @@ import {AddNewCoursePage} from "../add-new-course/add-new-course.page";
 export class CoursesPage implements OnInit {
 
   private courses: any[]
+  private waiting: boolean
 
   constructor(
       private authService: AuthenticationService,
@@ -22,8 +23,9 @@ export class CoursesPage implements OnInit {
 
   }
 
-  ngOnInit(){
-    FirestoreService.fetchCourseList().then(data => {
+  async ngOnInit(){
+    this.waiting = true
+    await FirestoreService.fetchCourseList().then(data => {
       let courses = []
       if(!data.empty) {
         data.docs.forEach(course => {
@@ -33,6 +35,7 @@ export class CoursesPage implements OnInit {
       }
       this.courses = courses
     })
+    this.waiting = false
   }
 
   onClick(course){
