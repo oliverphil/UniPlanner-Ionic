@@ -108,6 +108,14 @@ export class FirestoreService {
 
   async fetchClassesToday() {
     let allClasses = await this.fetchAllClasses()
+    return this.whichClassesToday(allClasses)
+  }
+
+  fetchClassesTodayNow() {
+    return this.whichClassesToday(this.fetchAllClassesNow())
+  }
+
+  whichClassesToday(allClasses){
     let today = new Date(Date.now())
     let todayClasses = []
     for(let cls of allClasses) {
@@ -151,7 +159,7 @@ export class FirestoreService {
     return false;
   }
 
-    static async deleteCourse(code) {
+    async deleteCourse(code) {
         firebase.firestore().doc(`/users/${userDetails().uid}/courses/${code}`).delete()
     }
 

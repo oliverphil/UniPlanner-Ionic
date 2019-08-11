@@ -53,7 +53,7 @@ export class CoursesPage implements OnInit {
   }
 
   async deleteCourse(code) {
-    await FirestoreService.deleteCourse(code);
+    await this.db.deleteCourse(code);
     this.ngOnInit();
   }
 

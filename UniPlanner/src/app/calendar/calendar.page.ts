@@ -82,6 +82,7 @@ export class CalendarPage implements OnInit {
 
 // Calendar event was clicked
   async onEventSelected(event) {
+    console.log(this.eventSource)
     // Use Angular date pipe for conversion
     let start = formatDate(event.startTime, 'medium', this.locale);
     let end = formatDate(event.endTime, 'medium', this.locale);
