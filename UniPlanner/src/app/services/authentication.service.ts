@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import * as firebase from "firebase/app";
 
 @Injectable({
@@ -6,45 +6,49 @@ import * as firebase from "firebase/app";
 })
 export class AuthenticationService {
 
-  constructor() { }
+  constructor() {
+  }
 
-  registerUser(value){
+  async registerUser(value) {
     let {email, password} = value
 
-    return new Promise<any>((resolve, reject) => {
-      firebase.auth().createUserWithEmailAndPassword(email, password)
-          .then((newUserCredentials: firebase.auth.UserCredential) => {
-              firebase.firestore()
-                  .doc(`/users/${newUserCredentials.user.uid}`)
-                  .set({email})
-          })
-          .catch(err => {
-              reject(err);
-          })
-    })
+    let create = await firebase.auth().createUserWithEmailAndPassword(email, password)
+      .then((newUserCredentials: firebase.auth.UserCredential) => {
+        firebase.firestore()
+          .doc(`/users/${newUserCredentials.user.uid}`)
+          .set({email})
+        return true
+      })
+      .catch(err => {
+        return false;
+      })
+    // return new Promise<any>((res) => {
+    //   return create
+    // })
+    return create
   }
 
-    static logout() {
-        firebase.auth().signOut()
-    }
+  static logout() {
+    firebase.auth().signOut()
+  }
 
-  loginUser(value){
+  loginUser(value) {
     return new Promise<any>((resolve, reject) => {
       firebase.auth().signInWithEmailAndPassword(value.email, value.password)
-          .then(
-              res => resolve(res),
-              err => reject(err))
+        .then(
+          res => resolve(res),
+          err => reject(err))
     })
   }
 
-  logoutUser(){
+  logoutUser() {
     return new Promise((resolve, reject) => {
-      if(firebase.auth().currentUser){
+      if (firebase.auth().currentUser) {
         firebase.auth().signOut()
-            .then(() => {
-              console.log("Log Out");
-              resolve();
-            }).catch((error) => {
+          .then(() => {
+            console.log("Log Out");
+            resolve();
+          }).catch((error) => {
           reject();
         });
       }
@@ -53,5 +57,5 @@ export class AuthenticationService {
 }
 
 export function userDetails() {
-    return firebase.auth().currentUser;
+  return firebase.auth().currentUser;
 }

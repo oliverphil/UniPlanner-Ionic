@@ -38,26 +38,43 @@ export class CalendarPage implements OnInit {
   }
 
   async ngOnInit() {
+    //update events for calendar
     this.eventSource = this.classesToEvents(this.db.fetchAllClassesNow())
-    if(!this.eventSource || this.eventSource.length < 1) {
+
+    //if there are no events, display the spinner while waiting for firestore
+    if (!this.eventSource || this.eventSource.length < 1) {
       this.waiting = true;
     }
-    this.refreshCalendar().then(res => {this.waiting = false})
+    //get data from firestore
+    this.refreshCalendar().then(res => {
+      this.waiting = false
+    })
   }
 
+  /**
+   * Update the class events for the calendar with
+   * data from firestore.
+   */
   async refreshCalendar() {
     let classes = await this.db.fetchAllClasses()
     this.eventSource = this.classesToEvents(classes);
   }
 
+  /**
+   * Convert classes from firestore to the
+   * correct layout for the calendar.
+   * @param classes the classes from the database.
+   * @return class events for the calendar.
+   */
   classesToEvents(classes) {
     let events = []
-    for(let cls of classes){
-      for(let day of cls.day){
+    for (let cls of classes) {
+      //for each day the class is on
+      for (let day of cls.day) {
+        //convert dates to dates for the week
         let startDate = UtilsService.makeDate(cls.startTime, day)
-        // startDate.setTime(cls.startTime)
         let endDate = UtilsService.makeDate(cls.endTime, day)
-        // endDate.setTime(cls.endTime)
+        //add event to events
         events.push({
           title: cls.code,
           desc: cls.type,
@@ -70,23 +87,29 @@ export class CalendarPage implements OnInit {
     return events
   }
 
-// Change between month/week/day
+  /**
+   * Change between week/day
+   */
   changeMode(mode) {
     this.calendar.mode = mode;
   }
 
-// Selected date reange and hence title changed
+  /**
+   * Selected date range and hence title changed
+   */
   onViewTitleChanged(title) {
     this.viewTitle = title;
   }
 
-// Calendar event was clicked
+  /**
+   * Calendar event was clicked
+   */
   async onEventSelected(event) {
-    console.log(this.eventSource)
     // Use Angular date pipe for conversion
     let start = formatDate(event.startTime, 'medium', this.locale);
     let end = formatDate(event.endTime, 'medium', this.locale);
 
+    //show popup with event/class details
     const alert = await this.alertCtrl.create({
       header: event.title,
       subHeader: event.desc,
@@ -94,13 +117,5 @@ export class CalendarPage implements OnInit {
       buttons: ['OK']
     });
     alert.present();
-  }
-
-// Time slot was clicked
-  onTimeSelected(ev) {
-    let selected = new Date(ev.selectedTime);
-    this.event.startTime = selected.toISOString();
-    selected.setHours(selected.getHours() + 1);
-    this.event.endTime = (selected.toISOString());
   }
 }

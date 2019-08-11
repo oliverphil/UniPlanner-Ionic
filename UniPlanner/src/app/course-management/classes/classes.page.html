@@ -11,7 +11,7 @@
   <ion-item *ngIf="!this.classes || this.classes.length === 0" class="no-class-wrapper">
     <ion-content *ngIf="!this.classes || this.classes.length === 0" class="no-class">
       It doesn't look like there are any classes here.<br/>
-      Feel free to <a (click)="newClass()">add a class</a>
+      Feel free to <a (click)="presentNewClassModal()">add a class</a>
     </ion-content>
   </ion-item>
 
@@ -24,13 +24,13 @@
           {{daysToString(cls.day)}}<br />
           Room: {{cls.room}}
         </p>
-        <ion-icon name="create" slot="end" (click)="editClass(cls)"></ion-icon>
+        <ion-icon name="create" slot="end" (click)="presentEditClassModal(cls)"></ion-icon>
         <ion-icon name="trash" slot="end" (click)="deleteClass(cls)"></ion-icon>
       </ion-item>
     </ion-item>
   </ion-content>
 
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="newClass()">
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="presentNewClassModal()">
     <ion-fab-button>
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>

@@ -22,7 +22,7 @@ export class AddNewClassPage implements OnInit {
   private courses: any[]
   private title: string
   private button: string
-  private edit: boolean = false
+  private readonly edit: boolean = false
 
   minDate = new Date().toISOString();
 
@@ -33,17 +33,18 @@ export class AddNewClassPage implements OnInit {
     this.title = navParams.get('title')
     this.button = navParams.get('button')
     let cls = this.navParams.get('cls')
+    //if a class is present, update the event with the relevant information
     if(cls){
       this.event = cls
       this.event.startTime = UtilsService.makeDate(this.event.startTime, 0).toString()
       this.event.endTime = UtilsService.makeDate(this.event.endTime, 0).toString()
       this.edit = true;
     }
-    console.log(this.event)
   }
 
   ngOnInit() {
     let courses = []
+    //fetch the list of courses from firestore
     this.db.fetchCourseList().then(data => {
       for(let doc of data.docs)
         courses.push(doc.data())
@@ -51,18 +52,9 @@ export class AddNewClassPage implements OnInit {
     this.courses = courses;
   }
 
-  resetEvent() {
-    this.event = {
-      code: '',
-      type: '',
-      startTime: '',
-      endTime: '',
-      day: [],
-      room: ''
-    };
-  }
-
-  // Create the right event format and reload source
+  /**
+   * Add or edit the class in firestore.
+   */
   addEvent() {
     if(this.edit){
       this.db.editClass(this.event)
@@ -72,6 +64,9 @@ export class AddNewClassPage implements OnInit {
     this.modalCtrl.dismiss()
   }
 
+  /**
+   * Ensure the class can be created.
+   */
   verifySubmit() {
     return this.event.code !== '' && this.event.endTime !== '' && this.event.startTime !== ''
   }

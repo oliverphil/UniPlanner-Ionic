@@ -8,28 +8,30 @@
 </ion-header>
 
 <ion-content *ngIf="!this.waiting">
-
   <ion-row>
     <!-- Change the displayed calendar mode -->
     <ion-col size="6">
-      <ion-button expand="block" [color]="calendar.mode == 'week' ? 'primary' : 'medium'" (click)="changeMode('week')">Week</ion-button>
+      <ion-button expand="block" [color]="calendar.mode == 'week' ? 'primary' : 'medium'"
+                  (click)="changeMode('week')">Week
+      </ion-button>
     </ion-col>
     <ion-col size="6">
-      <ion-button expand="block" [color]="calendar.mode == 'day' ? 'primary' : 'medium'" (click)="changeMode('day')">Day</ion-button>
+      <ion-button expand="block" [color]="calendar.mode == 'day' ? 'primary' : 'medium'"
+                  (click)="changeMode('day')">Day
+      </ion-button>
     </ion-col>
-
   </ion-row>
+
   <calendar *ngIf="this.eventSource"
-          [eventSource]="eventSource"
-          [calendarMode]="calendar.mode"
-          [currentDate]="calendar.currentDate"
-          (onEventSelected)="onEventSelected($event)"
-          (onTitleChanged)="onViewTitleChanged($event)"
-          (onTimeSelected)="onTimeSelected($event)"
-          startHour="7"
-          endHour="19"
-          step="10"
-          startingDayWeek="0">
+            [eventSource]="eventSource"
+            [calendarMode]="calendar.mode"
+            [currentDate]="calendar.currentDate"
+            (onEventSelected)="onEventSelected($event)"
+            (onTitleChanged)="onViewTitleChanged($event)"
+            startHour="7"
+            endHour="19"
+            step="10"
+            startingDayWeek="0">
   </calendar>
 </ion-content>
 

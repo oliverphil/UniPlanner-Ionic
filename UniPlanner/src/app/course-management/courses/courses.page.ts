@@ -25,10 +25,14 @@ export class CoursesPage implements OnInit {
   }
 
   async ngOnInit(){
+    //fetch locally stored course list
     this.courses = this.db.fetchCourseListNow()
+    //if there is no locally stored courses, show the spinner
     if(!this.courses || this.courses.length < 1) {
       this.waiting = true
     }
+
+    //fetch the course list from firebase
     await this.db.fetchCourseList().then(data => {
       let courses = []
       if(!data.empty) {
@@ -42,22 +46,21 @@ export class CoursesPage implements OnInit {
     this.waiting = false
   }
 
-  onClick(course){
-    this.presentEditCourseModal(course)
-    // this.ngOnInit()
-  }
-
-  newCourse() {
-    this.presentNewCourseModal()
-    // this.ngOnInit()
-  }
-
+  /**
+   * Delete the course.
+   * @param code the course code for the course to be deleted
+   */
   async deleteCourse(code) {
     await this.db.deleteCourse(code);
     this.ngOnInit();
   }
 
+  /**
+   * Open the edit course modal.
+   * @param course the course to populate the modal with
+   */
   async presentEditCourseModal(course) {
+    //setup information for the modal
     let modal = await this.modalCtrl.create({
       component: AddNewCoursePage,
       componentProps: {
@@ -68,6 +71,7 @@ export class CoursesPage implements OnInit {
         "details": course.details,
       }
     })
+    //refresh courses page when modal is exited
     modal.onDidDismiss().then(resolve => {
       this.ngOnInit()
     }).catch(err => console.log(err))
@@ -75,7 +79,11 @@ export class CoursesPage implements OnInit {
     return await modal.present();
   }
 
+  /**
+   * Open the new course modal.
+   */
   async presentNewCourseModal() {
+    //setup information for the modal
     let modal = await this.modalCtrl.create({
       component: AddNewCoursePage,
       componentProps: {
@@ -86,8 +94,9 @@ export class CoursesPage implements OnInit {
         "details": "",
       }
     })
+    //refresh courses page when modal is exited
     modal.onDidDismiss().then(resolve => {
-      console.log(resolve)
+      console.log(resolve.data)
       if(!resolve.data){
         //TODO: Popup to alert user that course already exists.
         console.log("Course exists")

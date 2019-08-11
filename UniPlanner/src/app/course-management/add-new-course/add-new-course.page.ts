@@ -28,9 +28,17 @@ export class AddNewCoursePage {
     this.button = navParams.get("button");
   }
 
-  handleSubmit() {
+  /**
+   * Store the edited/new course in firebase.
+   */
+  async handleSubmit() {
     if(this.new) {
-      this.modalCtrl.dismiss(this.db.addCourse(this.info))
+      let res = await this.db.addCourse(this.info).then(re => {
+        console.log(re)
+        return re
+      })
+      console.log(res)
+      this.modalCtrl.dismiss(res)
     }else{
       this.modalCtrl.dismiss(FirestoreService.editCourse(this.info))
     }

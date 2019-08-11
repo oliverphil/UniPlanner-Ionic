@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {AlertController, NavController} from "@ionic/angular";
 import {AuthenticationService} from "../services/authentication.service";
@@ -17,16 +17,14 @@ export class LoginPage implements OnInit {
   errorMessage: string = '';
 
   constructor(
-
-      private navCtrl: NavController,
-      private authService: AuthenticationService,
-      private formBuilder: FormBuilder,
-      private alert: AlertController
-
-  ) { }
+    private navCtrl: NavController,
+    private authService: AuthenticationService,
+    private formBuilder: FormBuilder,
+    private alert: AlertController
+  ) {
+  }
 
   ngOnInit() {
-
     this.validations_form = this.formBuilder.group({
       email: new FormControl('', Validators.compose([
         Validators.required,
@@ -39,17 +37,23 @@ export class LoginPage implements OnInit {
     });
   }
 
-
-  loginUser(value){
+  /**
+   * Login a user.
+   * @param value the information about the user trying to log in
+   */
+  loginUser(value) {
     this.authService.loginUser(value)
-        .then(res => {
-          this.navCtrl.navigateForward('/home');
-        }, err => {
-          this.errorMessage = err.message;
-          this.presentAlert()
-        })
+      .then(res => {
+        this.navCtrl.navigateForward('/home');
+      }, err => {
+        this.errorMessage = err.message;
+        this.presentAlert()
+      })
   }
 
+  /**
+   * Show a popup with an error message if the login was unsuccessful.
+   */
   async presentAlert() {
     const alert = await this.alert.create({
       header: 'Incorrect Details',
@@ -73,7 +77,10 @@ export class LoginPage implements OnInit {
     await alert.present();
   }
 
-  goToRegisterPage(){
+  /**
+   * Go to the register page.
+   */
+  goToRegisterPage() {
     this.navCtrl.navigateForward('/register');
   }
 

@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import * as firebase from "firebase"
-import { userDetails } from "./authentication.service";
+import {userDetails} from "./authentication.service";
 import {UtilsService} from "./utils.service";
 
 @Injectable({
@@ -29,16 +29,16 @@ export class FirestoreService {
 
   async fetchClassInfo(courseCode) {
     let classes = []
-    if(!userDetails())
+    if (!userDetails())
       return classes;
     await firebase.firestore().collection(`/users/${userDetails().uid}/courses/${courseCode}/classes`).get()
-        .then(cls => {
-          cls.docs.forEach(doc => {
-            let data = doc.data()
-            data.id = doc.id
-            classes.push(data)
-          })
+      .then(cls => {
+        cls.docs.forEach(doc => {
+          let data = doc.data()
+          data.id = doc.id
+          classes.push(data)
         })
+      })
     this.classInfo[courseCode] = classes
     return classes
   }
@@ -57,7 +57,7 @@ export class FirestoreService {
       docs.push(doc.data())
     })
     let classes = []
-    for(let course of docs){
+    for (let course of docs) {
       let cls = await this.fetchClassInfo(course.code).then(result => {
         return result
       })
@@ -71,21 +71,21 @@ export class FirestoreService {
     return this.classes
   }
 
-  addCourse(data) {
-    let col = firebase.firestore().collection(`/users/${userDetails().uid}/courses/`)
-    col.doc(data.code).get().then(res => {
-      if(!res.exists){
-        col.doc(data.code).set(data)
-            .then(res => {
-              this.courses.push(data)
-              return true;
-            }).catch(err => {
-              return false;
-            })
-      } else {
+  async addCourse(data) {
+    let col = await firebase.firestore().collection(`/users/${userDetails().uid}/courses/`)
+    let doc = await col.doc(data.code).get()
+    console.log(doc)
+    if (!doc.exists) {
+      return await col.doc(data.code).set(data)
+        .then(res => {
+          this.courses.push(data)
+          return true;
+        }).catch(err => {
         return false;
-      }
-    }).catch(err => console.log(err))
+      })
+    } else {
+      return false;
+    }
   }
 
   addClass(data) {
@@ -102,7 +102,11 @@ export class FirestoreService {
 
   static editCourse(data) {
     return firebase.firestore().collection(`/users/${userDetails().uid}/courses/`)
-        .doc(data.code).set(data).then(res => {return true}, err => {return false});
+      .doc(data.code).set(data).then(res => {
+        return true
+      }, err => {
+        return false
+      });
   }
 
   async fetchClassesToday() {
@@ -114,11 +118,11 @@ export class FirestoreService {
     return this.whichClassesToday(this.fetchAllClassesNow())
   }
 
-  whichClassesToday(allClasses){
+  whichClassesToday(allClasses) {
     let today = new Date(Date.now())
     let todayClasses = []
-    for(let cls of allClasses) {
-      if(FirestoreService.isClassOnDate(cls, today)){
+    for (let cls of allClasses) {
+      if (FirestoreService.isClassOnDate(cls, today)) {
         todayClasses.push(cls)
       }
     }
@@ -127,9 +131,9 @@ export class FirestoreService {
 
   static isClassOnDate(cls, date: Date): boolean {
     let dayNum = date.getDay()
-    for(let day of cls.day) {
+    for (let day of cls.day) {
       let thisDayNum
-      switch (day){
+      switch (day) {
         case "monday":
           thisDayNum = 1;
           break;
@@ -151,38 +155,54 @@ export class FirestoreService {
         default:
           thisDayNum = 7;
       }
-      if(thisDayNum === dayNum)
+      if (thisDayNum === dayNum)
         return true;
     }
 
     return false;
   }
 
-    async deleteCourse(code) {
-      this.courses = this.courses.filter(val => {return val.id !== code})
-      this.classes = this.classes.filter(val => {return val.code !== code})
-      delete this.classInfo[code]
-      firebase.firestore().doc(`/users/${userDetails().uid}/courses/${code}`).delete()
-    }
+  async deleteCourse(code) {
+    this.courses = this.courses.filter(val => {
+      return val.id !== code
+    })
+    this.classes = this.classes.filter(val => {
+      return val.code !== code
+    })
+    delete this.classInfo[code]
+    firebase.firestore().doc(`/users/${userDetails().uid}/courses/${code}`).delete()
+  }
 
-    async deleteClass(cls) {
-      this.classes = this.classes.filter(val => {return val.id !== cls.id})
-      let course = this.classInfo[cls.code]
-      this.classInfo[cls.code] = course.filter(val => {return val.id !== cls.id})
-      firebase.firestore().doc(`/users/${userDetails().uid}/courses/${cls.code}/classes/${cls.id}`).delete()
-    }
+  async deleteClass(cls) {
+    this.classes = this.classes.filter(val => {
+      return val.id !== cls.id
+    })
+    let course = this.classInfo[cls.code]
+    this.classInfo[cls.code] = course.filter(val => {
+      return val.id !== cls.id
+    })
+    firebase.firestore().doc(`/users/${userDetails().uid}/courses/${cls.code}/classes/${cls.id}`).delete()
+  }
 
-    editClass(cls) {
-      let startTime = new Date(cls.startTime)
-      let endTime = new Date(cls.endTime)
-      let editedClass = {...cls}
-      editedClass.startTime = Number((startTime.getHours() * 100) + startTime.getMinutes())
-      editedClass.endTime = Number((endTime.getHours() * 100) + endTime.getMinutes())
-      this.classes = this.classes.filter(val => {return val.id !== cls.id})
-      this.classes.push(editedClass)
-      this.classInfo[cls.code] = this.classInfo[cls.code].filter(val => {return val.id !== cls.id})
-      this.classInfo[cls.code].push(editedClass)
-      return firebase.firestore().collection(`/users/${userDetails().uid}/courses/${cls.code}/classes/`)
-          .doc(cls.id).set(editedClass).then(res => {return true}, err => {return false})
-    }
+  editClass(cls) {
+    let startTime = new Date(cls.startTime)
+    let endTime = new Date(cls.endTime)
+    let editedClass = {...cls}
+    editedClass.startTime = Number((startTime.getHours() * 100) + startTime.getMinutes())
+    editedClass.endTime = Number((endTime.getHours() * 100) + endTime.getMinutes())
+    this.classes = this.classes.filter(val => {
+      return val.id !== cls.id
+    })
+    this.classes.push(editedClass)
+    this.classInfo[cls.code] = this.classInfo[cls.code].filter(val => {
+      return val.id !== cls.id
+    })
+    this.classInfo[cls.code].push(editedClass)
+    return firebase.firestore().collection(`/users/${userDetails().uid}/courses/${cls.code}/classes/`)
+      .doc(cls.id).set(editedClass).then(res => {
+        return true
+      }, err => {
+        return false
+      })
+  }
 }

@@ -25,10 +25,13 @@ export class ClassesPage implements OnInit {
   }
 
   async ngOnInit() {
+    //get locally stored classes
     this.classes = this.db.fetchAllClassesNow()
+    //if no locally stored classes, show spinner
     if(!this.classes || this.classes.length < 1){
       this.waiting = true
     }
+    //get classes stored in firebase
     new Promise(() => {
       this.db.fetchAllClasses().then(res => {
         this.classes = res;
@@ -37,11 +40,11 @@ export class ClassesPage implements OnInit {
     })
   }
 
-  newClass() {
-    this.presentNewClassModal()
-  }
-
+  /**
+   * Show new class modal.
+   */
   async presentNewClassModal() {
+    //setup modal with information for the new class modal
     let modal = await this.modalCtrl.create({
       component: AddNewClassPage,
       componentProps: {
@@ -49,6 +52,7 @@ export class ClassesPage implements OnInit {
         "button": "Add Class",
       }
     })
+    //refresh classes page on dismiss
     modal.onDidDismiss().then(resolve => {
       this.ngOnInit()
     }).catch(err => console.log(err))
@@ -56,8 +60,13 @@ export class ClassesPage implements OnInit {
     return await modal.present();
   }
 
+  /**
+   * Show edit class modal.
+   * @param cls the class to be edited
+   */
   async presentEditClassModal(cls) {
     let clsCopy = {...cls}
+    //setup modal with information for the edit class modal
     let modal = await this.modalCtrl.create({
       component: AddNewClassPage,
       componentProps: {
@@ -66,6 +75,7 @@ export class ClassesPage implements OnInit {
         "button": "Edit",
       }
     })
+    //refresh classes page on dismiss
     modal.onDidDismiss().then(resolve => {
       this.ngOnInit()
     }).catch(err => console.log(err))
@@ -73,10 +83,10 @@ export class ClassesPage implements OnInit {
     return await modal.present();
   }
 
-  editClass(cls) {
-    this.presentEditClassModal(cls)
-  }
-
+  /**
+   * Delete the class from firebase.
+   * @param cls the class to delete
+   */
   deleteClass(cls) {
     this.db.deleteClass(cls)
     this.ngOnInit()
