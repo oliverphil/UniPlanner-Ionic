@@ -77,7 +77,7 @@ export class CalendarPage implements OnInit {
         //add event to events
         events.push({
           title: cls.code,
-          desc: cls.type,
+          desc: `${cls.type}: ${cls.room}`,
           startTime: startDate,
           endTime: endDate,
           allDay: false

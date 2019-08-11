@@ -56,7 +56,7 @@ export class UtilsService {
       case "saturday":
         return 6;
       default:
-        return 7;
+        return 0;
     }
   }
 }
