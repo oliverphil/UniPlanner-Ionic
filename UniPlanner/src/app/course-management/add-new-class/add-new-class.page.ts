@@ -65,11 +65,11 @@ export class AddNewClassPage implements OnInit {
   // Create the right event format and reload source
   addEvent() {
     if(this.edit){
-      FirestoreService.editClass(this.event)
+      this.db.editClass(this.event)
     } else {
       this.db.addClass(this.event)
-      this.modalCtrl.dismiss()
     }
+    this.modalCtrl.dismiss()
   }
 
   verifySubmit() {

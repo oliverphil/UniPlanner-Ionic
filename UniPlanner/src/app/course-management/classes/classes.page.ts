@@ -25,11 +25,16 @@ export class ClassesPage implements OnInit {
   }
 
   async ngOnInit() {
-    this.waiting = true
-    this.classes = await this.db.fetchAllClasses().then(res => {
-      return res
+    this.classes = this.db.fetchAllClassesNow()
+    if(!this.classes || this.classes.length < 1){
+      this.waiting = true
+    }
+    new Promise(() => {
+      this.db.fetchAllClasses().then(res => {
+        this.classes = res;
+        this.waiting = false
+      })
     })
-    this.waiting = false
   }
 
   newClass() {
@@ -73,7 +78,7 @@ export class ClassesPage implements OnInit {
   }
 
   deleteClass(cls) {
-    FirestoreService.deleteClass(cls)
+    this.db.deleteClass(cls)
     this.ngOnInit()
   }
 }

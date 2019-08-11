@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as firebase from "firebase"
 import { userDetails } from "./authentication.service";
+import {UtilsService} from "./utils.service";
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,6 @@ export class FirestoreService {
     let ret = firebase.firestore().collection(`/users/${userDetails().uid}/courses/`).get()
     new Promise(() => {
       ret.then(res => {
-        console.log(res)
         this.courses = res.docs
       })
     })
@@ -94,7 +94,6 @@ export class FirestoreService {
     let endTime = new Date(data.endTime)
     data.startTime = (startTime.getHours() * 100) + startTime.getMinutes()
     data.endTime = (endTime.getHours() * 100) + endTime.getMinutes()
-    console.log(data)
     col.add(data).then(res => {
       this.classes.push(data)
       this.classInfo[data.code] = data
@@ -160,15 +159,30 @@ export class FirestoreService {
   }
 
     async deleteCourse(code) {
-        firebase.firestore().doc(`/users/${userDetails().uid}/courses/${code}`).delete()
+      this.courses = this.courses.filter(val => {return val.id !== code})
+      this.classes = this.classes.filter(val => {return val.code !== code})
+      delete this.classInfo[code]
+      firebase.firestore().doc(`/users/${userDetails().uid}/courses/${code}`).delete()
     }
 
-    static async deleteClass(cls) {
+    async deleteClass(cls) {
+      this.classes = this.classes.filter(val => {return val.id !== cls.id})
+      let course = this.classInfo[cls.code]
+      this.classInfo[cls.code] = course.filter(val => {return val.id !== cls.id})
       firebase.firestore().doc(`/users/${userDetails().uid}/courses/${cls.code}/classes/${cls.id}`).delete()
     }
 
-    static editClass(cls) {
+    editClass(cls) {
+      let startTime = new Date(cls.startTime)
+      let endTime = new Date(cls.endTime)
+      let editedClass = {...cls}
+      editedClass.startTime = Number((startTime.getHours() * 100) + startTime.getMinutes())
+      editedClass.endTime = Number((endTime.getHours() * 100) + endTime.getMinutes())
+      this.classes = this.classes.filter(val => {return val.id !== cls.id})
+      this.classes.push(editedClass)
+      this.classInfo[cls.code] = this.classInfo[cls.code].filter(val => {return val.id !== cls.id})
+      this.classInfo[cls.code].push(editedClass)
       return firebase.firestore().collection(`/users/${userDetails().uid}/courses/${cls.code}/classes/`)
-          .doc(cls.id).set(cls).then(res => {return true}, err => {return false})
+          .doc(cls.id).set(editedClass).then(res => {return true}, err => {return false})
     }
 }
