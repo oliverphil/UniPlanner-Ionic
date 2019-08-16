@@ -153,7 +153,7 @@ export class FirestoreService {
           thisDayNum = 6;
           break;
         default:
-          thisDayNum = 7;
+          thisDayNum = 0;
       }
       if (thisDayNum === dayNum)
         return true;
