@@ -68,3 +68,26 @@ phone's connection is unreliable.
 ##### Organisation
 
 ![](folder-organisation.png)
+
+The organisation of my folders can be seen above. The main pages are each 
+in their own folders, with the pages relating to courses and classes as subfolders 
+within the course-management folder. The services are separate in the services 
+folder, and any overall app design information is stored in the top-level files,
+as is by default in an Ionic application.
+
+##### Cross-Cutting
+
+A cross-cutting component I made use of in my application was an authentication 
+guard. This authentication guard provided security by only allowing access to pages
+that were not the login or register page to logged in users.
+
+#### Major External Component
+
+The major external component I used for my application was Firebase. 
+I made use of both the authentication and database services of Firebase.
+
+##### Authentication
+
+![](user-auth-firebase.png)
+
+##### Database
